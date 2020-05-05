@@ -1,0 +1,57 @@
+---
+title: "Docker Walkthrough"
+author: "Durand Sinclair"
+date: "05/05/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("/Users/durandsinclair/Documents/Training/MDSI/Davide Docker")
+getwd()
+```
+
+# Business Problem
+
+Davide has prepared an R Shiny dashboard for his work. He now wants to deploy it onto AWS, in a way that 50-100 can use it at the same time. 
+
+Currently, the Shiny app is deployed into ShinyProxy, which allows a maximum of one thread to run the app. Unfortunately, this limits the number of users that can use the app at the same time. 
+
+In order to deploy the Shiny app in a way that multiple people can use it, this document examines whether and how Docker can be used.
+
+
+# What is Docker
+
+Docker turns your computing stack into a "container", which contains every piece of software and oeprating system you need to run a particular program and nothing you don't. As an analogy, if you gave someone a Word document to read but it was in a container, you'd be giving them 
+* The document itself
+* Microsoft Word - although only enough to open the document
+* Microsoft Windows - although only enough to open Microsoft Word
+You wouldn't be giving them the thousands of fonts in Word that aren't used in your document. You wouldn't be giving them Minesweeper, even though that usually comes with Microsoft Windows. 
+
+The advantages of using a container are that 
+* Your program can be opened on any form of computer, because you give it an operating system as well. 
+* It's much faster than using a virtual machine, because a virtual machine needs all parts of the operating system and software. 
+
+# How does Docker solve the Business Problem
+The business problem is that if too many people try to connect to the dashboard at once, all the requests form a queue, and the request at the back of the queue can't be processed until all the other requests at the front of the queue have been taken care of. That means it's slow. 
+
+But on the other hand, if each request is handled by its own container, each request finds itself at the front of its own queue. The problem then becomes when should the system spin up new containers, and when should they be spun down. (The more containers that are switched on at a given time, the more money it will cost, so we only want them switched on when they're needed.) 
+
+The solution to this is to use a container management system. Some examples include Kubernetes and Docker Swarm. But AWS has one as a service called Elastic Container Service (ECS).
+
+
+
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
